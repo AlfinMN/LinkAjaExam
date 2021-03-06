@@ -1,0 +1,26 @@
+version: '3.7'
+
+services: 
+  db:
+    build: ./db
+    restart: on-failure
+    container_name: db
+    environment: 
+      MYSQL_ROOT_PASSWORD: root
+    ports: 
+      - 3306:3306
+    networks: 
+      - appnetwork
+  app:
+    build: .
+    restart: on-failure
+    container_name: app
+    ports: 
+      - 9898:9898
+    depends_on: 
+      - db
+    networks: 
+      - appnetwork
+networks:
+  appnetwork:
+    driver: bridge
